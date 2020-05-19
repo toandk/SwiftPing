@@ -15,8 +15,7 @@ class ViewController: UIViewController {
 
 		SwiftPing.ping(host: "google.com",
 		               configuration: config, queue: DispatchQueue.global()) { (ping, error) in
-										print(ping)
-										print(error)
+//                        print(ping)
                         
                         // start the ping.
                         ping?.observer = {(ping:SwiftPing, response:PingResponse) -> Void in
@@ -32,10 +31,9 @@ class ViewController: UIViewController {
                            queue: DispatchQueue.main){ (response: PingResponse) in
                             
                             print(response)
-                            print(response.duration)
-                            print(response.ipAddress)
-                            print(response.error)
-                            print(response.identifier)
+                            print("duration: \(response.duration)")
+                            print("IP: \(response.ipAddress ?? "")")
+                            print("Identifier: \(response.identifier)")
         }
         
         

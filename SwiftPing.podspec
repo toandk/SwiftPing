@@ -1,17 +1,17 @@
 Pod::Spec.new do |s|
   s.name             = "SwiftPing"
-  s.summary          = "SwiftPing:ICMP Ping in swift"
-  s.version          = "1.1.1"
-  s.homepage         = "https://github.com/ankitthakur/SwiftPing"
+  s.summary          = "SwiftPing:ICMP Ping in swift - Forked from https://github.com/ankitthakur/SwiftPing"
+  s.version          = "1.1.2"
+  s.homepage         = "https://github.com/toandk/SwiftPing"
   s.license          = 'MIT'
   s.author           = { "Ankit Thakur" => "ankitthakur85@icloud.com" }
   s.source           = {
-    :git => "https://github.com/ankitthakur/SwiftPing.git",
+    :git => "https://github.com/toandk/SwiftPing.git",
     :tag => s.version.to_s
   }
   s.social_media_url = 'https://twitter.com/ankitthakur'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.9'
   s.tvos.deployment_target = '9.2'
 

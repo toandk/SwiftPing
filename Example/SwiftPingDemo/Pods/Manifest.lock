@@ -1,5 +1,5 @@
 PODS:
-  - SwiftPing (1.1)
+  - SwiftPing (1.1.1)
 
 DEPENDENCIES:
   - SwiftPing (from `../../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  SwiftPing: 198f106f3df8dcb952b1656328daa1ed0f9a13a6
+  SwiftPing: 9b444bde61c3f9272a51fabc1aa08eee03c986d1
 
 PODFILE CHECKSUM: 63c2cc1c4e502c519300c399b5044138eaa9991c
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.9.1

@@ -20,7 +20,7 @@ func getIPv4AddressFromHost(host:String, error:AutoreleasingUnsafeMutablePointer
     if status == false {
         
         if Int32(streamError.domain)  == kCFStreamErrorDomainNetDB {
-            error.pointee = NSError(domain: kCFErrorDomainCFNetwork as String, code: Int(CFNetworkErrors.cfHostErrorUnknown.rawValue) , userInfo: [kCFGetAddrInfoFailureKey as NSObject : "error in host name or address lookup"])
+            error.pointee = NSError(domain: kCFErrorDomainCFNetwork as String, code: Int(CFNetworkErrors.cfHostErrorUnknown.rawValue) , userInfo: [kCFGetAddrInfoFailureKey as String : "error in host name or address lookup"])
         }
         else{
             error.pointee = NSError(domain: kCFErrorDomainCFNetwork as String, code: Int(CFNetworkErrors.cfHostErrorUnknown.rawValue) , userInfo: nil)
@@ -76,7 +76,7 @@ public class SwiftPing: NSObject {
     private var currentSequenceNumber:UInt64 = 0
     private var currentStartDate:Date?
     
-    private var timeoutBlock:((Void) -> Void)?
+    private var timeoutBlock:(() -> Void)?
     
     private var currentQueue:DispatchQueue?
     
@@ -291,7 +291,7 @@ public class SwiftPing: NSObject {
         var icmpHeaderData:NSData?
         var icmpData:NSData?
         
-        let extractIPAddressBlock: (Void) -> String? = {
+        let extractIPAddressBlock: (() -> String?) = {
             if ipHeaderData == nil {
                 return nil
             }
@@ -342,7 +342,7 @@ public class SwiftPing: NSObject {
         
         let icmpPackage:NSData = ICMPPackageCreate(identifier: UInt16(self.identifier!), sequenceNumber: UInt16(self.currentSequenceNumber), payloadSize: UInt32(self.configuration!.payloadSize))!;
         
-        let socketError:CFSocketError = CFSocketSendData(socket!, self.ipv4address as! CFData, icmpPackage as CFData, self.configuration!.timeOutInterval)
+        let socketError:CFSocketError = CFSocketSendData(socket!, self.ipv4address! as CFData, icmpPackage as CFData, self.configuration!.timeOutInterval)
         
         if socketError == CFSocketError.error {
             let error = NSError(domain: NSURLErrorDomain, code:NSURLErrorCannotFindHost, userInfo: [:])

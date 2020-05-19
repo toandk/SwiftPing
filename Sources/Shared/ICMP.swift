@@ -69,7 +69,7 @@ enum ICMPType:UInt8{
 @inline(__always) func ICMPPackageCreate(identifier:UInt16, sequenceNumber:UInt16, payloadSize:UInt32)->NSData?
 {
 
-    var packet:String = "\(arc4random()) bottles of beer on the wall sdnwjdn  dskjwebdkjb wekjdnqkjdb wekjdbqewkjdbkjewvb wekjbdkqjwbdkjqbvkj bkjbdkqjwbdkqjwb webdwbeo23oeh08eobqwkjbkjwd bkj2bqkjfbcwkdvbwekj bwkejbdqjkwdbqkjwbc wekjqbfkjqwbdqkjevb wekjbfkj bwekjqwbdkqjbvkjwdb kwbfqhwebd12douc2wevb qbdkjqwbd"
+    let packet:String = "\(arc4random()) bottles of beer on the wall sdnwjdn  dskjwebdkjb wekjdnqkjdb wekjdbqewkjdbkjewvb wekjbdkqjwbdkjqbvkj bkjbdkqjwbdkqjwb webdwbeo23oeh08eobqwkjbkjwd bkj2bqkjfbcwkdvbwekj bwkejbdqjkwdbqkjwbc wekjqbfkjqwbdqkjevb wekjbfkj bwekjqwbdkqjbvkjwdb kwbfqhwebd12douc2wevb qbdkjqwbd"
     
 	// Construct the ping packet.
 	var payload:NSData = NSData(data: packet.data(using: String.Encoding.utf8)!)
@@ -77,7 +77,7 @@ enum ICMPType:UInt8{
 	let package:NSMutableData = NSMutableData(capacity: MemoryLayout<ICMPHeader>.size+payload.length)!
 
 
-	var mutableBytes = package.mutableBytes;
+	let mutableBytes = package.mutableBytes
     
     let header:ICMPHeader = mutableBytes.assumingMemoryBound(to: ICMPHeader.self).pointee
 
@@ -88,7 +88,8 @@ enum ICMPType:UInt8{
 	icmpHeader.checkSum = 0
 	icmpHeader.identifier = CFSwapInt16HostToBig(identifier)
 	icmpHeader.sequenceNumber = CFSwapInt16HostToBig(sequenceNumber)
-	memcpy(&icmpHeader + 1, payload.bytes, payload.length)
+//	memcpy(&icmpHeader + 1, payload.bytes, payload.length)
+    copyMem(pointer: &icmpHeader, payload: payload)
 
 	// The IP checksum returns a 16-bit number that's already in correct byte order
 	// (due to wacky 1's complement maths), so we just put it into the packet as a
@@ -107,6 +108,10 @@ enum ICMPType:UInt8{
     print("ping package: \(package)")
     
 	return package;
+}
+
+@inline(__always) func copyMem(pointer: UnsafeMutableRawPointer, payload: NSData) {
+    memcpy(pointer + 1, payload.bytes, payload.length)
 }
 
 @inline(__always) func ICMPExtractResponseFromData(data:NSData, ipHeaderData:AutoreleasingUnsafeMutablePointer<NSData?>, ipData:AutoreleasingUnsafeMutablePointer<NSData?>, icmpHeaderData:AutoreleasingUnsafeMutablePointer<NSData?>, icmpData:AutoreleasingUnsafeMutablePointer<NSData?>)-> Bool{
@@ -146,11 +151,9 @@ enum ICMPType:UInt8{
 
 	var headerBuffer = mutableBytes.assumingMemoryBound(to: UInt8.self) + icmpHeaderOffset
 
-	guard let icmpheader: ICMPHeader = (withUnsafePointer(to: &headerBuffer) { (temp) in
+	let icmpheader: ICMPHeader = (withUnsafePointer(to: &headerBuffer) { (temp) in
 		return unsafeBitCast(temp, to: ICMPHeader.self)
-		}) else {
-			return false
-	}
+		})
 
 	var icmpHeader = icmpheader
 
