@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "SwiftPing"
   s.summary          = "SwiftPing:ICMP Ping in swift - Forked from https://github.com/ankitthakur/SwiftPing"
-  s.version          = "1.1.2"
+  s.version          = "1.1.3"
   s.homepage         = "https://github.com/toandk/SwiftPing"
   s.license          = 'MIT'
   s.author           = { "Ankit Thakur" => "ankitthakur85@icloud.com" }

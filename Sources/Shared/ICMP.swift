@@ -88,8 +88,8 @@ enum ICMPType:UInt8{
 	icmpHeader.checkSum = 0
 	icmpHeader.identifier = CFSwapInt16HostToBig(identifier)
 	icmpHeader.sequenceNumber = CFSwapInt16HostToBig(sequenceNumber)
-//	memcpy(&icmpHeader + 1, payload.bytes, payload.length)
-    copyMem(pointer: &icmpHeader, payload: payload)
+	memcpy(&icmpHeader + 1, payload.bytes, payload.length)
+//    copyMem(pointer: &icmpHeader, payload: payload)
 
 	// The IP checksum returns a 16-bit number that's already in correct byte order
 	// (due to wacky 1's complement maths), so we just put it into the packet as a
